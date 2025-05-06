@@ -1,21 +1,22 @@
 from PyQt6.QtWidgets import QMainWindow, QGridLayout, QLabel, QWidget, QLineEdit, QPushButton
 from PyQt6.QtCore import Qt
-
-from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg as FG
+from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
-
 import numpy as np
+
+from app.gui.style.style import style
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle('draw graph')
+        self.setStyleSheet(style)
 
         layout = QGridLayout()
         widget = QWidget()
 
         self.figure = Figure(figsize=(5, 4), tight_layout=True)
-        self.canvas = FG(self.figure)
+        self.canvas = FigureCanvas(self.figure)
         self.ax = self.figure.add_subplot(111)
 
         self.ax.set_title("Graph")
