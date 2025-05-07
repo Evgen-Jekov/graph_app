@@ -6,31 +6,10 @@ import numpy as np
 
 from app.gui.style.style import style
 from app.service.DRY import draw_graph
+from app.service.service import WorkGraph
 
-mat_evel = []
+work = WorkGraph()
 
-SAFE_FUNCS = {
-    "sin": np.sin,
-    "cos": np.cos,
-    "tan": np.tan,
-    "arcsin": np.arcsin,
-    "arccos": np.arccos,
-    "arctan": np.arctan,
-    "exp": np.exp,
-    "log": np.log,
-    "log10": np.log10,
-    "sqrt": np.sqrt,
-    "abs": np.abs,
-    "floor": np.floor,
-    "ceil": np.ceil,
-    "round": np.round,
-    "maximum": np.maximum,
-    "minimum": np.minimum,
-    "where": np.where,
-    "clip": np.clip,
-    "pi": np.pi,
-    "e": np.e,
-}
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -41,7 +20,7 @@ class MainWindow(QMainWindow):
         layout = QGridLayout()
         widget = QWidget()
 
-        self.figure = Figure(figsize=(8, 6), tight_layout=True)  # Увеличил размер
+        self.figure = Figure(figsize=(8, 6), tight_layout=True)
         self.canvas = FigureCanvas(self.figure)
         self.ax = self.figure.add_subplot(111)
 
@@ -78,41 +57,9 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(widget)
         self.show()
 
+
     def add_graph(self):
-        try:
-            x_min = float(self.x_min_input.text())
-            x_max = float(self.x_max_input.text())
-
-            if x_min >= x_max:
-                raise ValueError("x_min must be less than x_max")
-            
-        except ValueError as e:
-            print(f"x range error: {e}")
-            return
-
-        x = np.linspace(x_min, x_max, 400)
-        expr = self.mat.text()
-        mat_evel.append(f"{expr}\n")
-
-        try:
-            y = eval(expr, {"x": x, **SAFE_FUNCS, "__builtins__": {}})
-
-            if np.isscalar(y):
-                y = np.full_like(x, y)
-
-            if y.shape != x.shape:
-                raise ValueError("The expression must return an array of the same length as x.")
-
-            draw_graph(self=self, dr=True, x=x, y=y, expr=expr)
-        except Exception as e:
-            print(f"Error in expression: {e}")
-
-        res = ''
-
-        for i in range(len(mat_evel)):
-            res += mat_evel[i]
-
-        self.mat_exp.setText(res)
+        work.add_graph(sl=self)
 
     def clear_graph(self):
         draw_graph(self=self, dr=False)
