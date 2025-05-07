@@ -5,6 +5,7 @@ from matplotlib.figure import Figure
 import numpy as np
 
 from app.gui.style.style import style
+from app.service.DRY import draw_graph
 
 mat_evel = []
 
@@ -44,10 +45,7 @@ class MainWindow(QMainWindow):
         self.canvas = FigureCanvas(self.figure)
         self.ax = self.figure.add_subplot(111)
 
-        self.ax.set_title("Graph")
-        self.ax.set_xlabel("X")
-        self.ax.set_ylabel("Y")
-        self.ax.grid(True)
+        draw_graph(self=self, dr=False)
 
         instruction = QLabel(text='Enter a mathematical expression')
         self.mat = QLineEdit()
@@ -105,13 +103,7 @@ class MainWindow(QMainWindow):
             if y.shape != x.shape:
                 raise ValueError("The expression must return an array of the same length as x.")
 
-            self.ax.plot(x, y, label=expr)
-            self.ax.set_title("Graph")
-            self.ax.set_xlabel("X")
-            self.ax.set_ylabel("Y")
-            self.ax.grid(True)
-            self.ax.legend()
-            self.canvas.draw()
+            draw_graph(self=self, dr=True, x=x, y=y, expr=expr)
         except Exception as e:
             print(f"Error in expression: {e}")
 
@@ -123,12 +115,6 @@ class MainWindow(QMainWindow):
         self.mat_exp.setText(res)
 
     def clear_graph(self):
-        self.ax.cla()
-        self.ax.set_title("Graph")
-        self.ax.set_xlabel("X")
-        self.ax.set_ylabel("Y")
-        self.ax.grid(True)
-        self.ax.legend()
-        self.canvas.draw()
+        draw_graph(self=self, dr=False)
 
         self.mat_exp.setText('')
