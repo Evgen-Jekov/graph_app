@@ -7,6 +7,7 @@ import numpy as np
 from app.gui.style.style import style
 from app.service.DRY import draw_graph
 from app.service.service import WorkGraph
+from app.service.service_abc import mat_evel
 
 work = WorkGraph()
 
@@ -65,3 +66,4 @@ class MainWindow(QMainWindow):
         draw_graph(self=self, dr=False)
 
         self.mat_exp.setText('')
+        mat_evel.clear()

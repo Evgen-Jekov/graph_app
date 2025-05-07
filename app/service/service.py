@@ -31,12 +31,12 @@ class WorkGraph(WorkGraphBase):
                 raise ValueError("The expression must return an array of the same length as x.")
 
             draw_graph(self=sl, dr=True, x=x, y=y, expr=expr)
+
+            res = ''
+
+            for i in range(len(mat_evel)):
+                res += mat_evel[i]
+
+            sl.mat_exp.setText(res)
         except Exception as e:
             print(f"Error in expression: {e}")
-
-        res = ''
-
-        for i in range(len(mat_evel)):
-            res += mat_evel[i]
-
-        sl.mat_exp.setText(res)
