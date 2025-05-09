@@ -21,8 +21,7 @@ class WorkGraph(WorkGraphBase):
             
         except ValueError as e:
             self.condition = False
-            print(f"x range error: {e}")
-            return
+            return f"x range error: {e}"
 
         x = np.linspace(x_min, x_max, 400)
         expr = sl.mat.text()
@@ -42,7 +41,7 @@ class WorkGraph(WorkGraphBase):
             mat_evel.append(f"{expr}\n")
         except Exception as e:
             self.condition = False
-            print(f"Error in expression: {e}")
+            return f"Error in expression: {e}"
 
         if self.condition:
             res = ''

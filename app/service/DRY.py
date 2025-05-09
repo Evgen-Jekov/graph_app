@@ -1,3 +1,11 @@
+from PyQt6.QtWidgets import QMessageBox
+
+def show_message(text : str, type_message : str):
+    window = QMessageBox()
+    window.setWindowTitle(type_message)
+    window.setText(text)
+    window.exec()
+
 def draw_graph(self, dr : bool, x=None, y=None, expr=None):
     if dr:
         self.ax.plot(x, y, label=expr)

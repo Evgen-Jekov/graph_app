@@ -8,6 +8,7 @@ from app.gui.style.style import style
 from app.service.DRY import draw_graph
 from app.service.service import WorkGraph
 from app.service.service_abc import mat_evel
+from app.service.DRY import show_message
 
 work = WorkGraph()
 
@@ -68,8 +69,11 @@ class MainWindow(QMainWindow):
 
 
     def add_graph(self):
-        work.add_graph(sl=self)
+        error = work.add_graph(sl=self)
 
+        if isinstance(error, str):
+            show_message(text=error, type_message="Error")
+            
     def clear_graph(self):
         draw_graph(self=self, dr=False)
 
