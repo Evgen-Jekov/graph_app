@@ -21,7 +21,7 @@ class MainWindow(QMainWindow):
         layout = QGridLayout()
         widget = QWidget()
 
-        self.figure = Figure(figsize=(8, 6), tight_layout=True)
+        self.figure = Figure(figsize=(8, 8), tight_layout=True)
         self.canvas = FigureCanvas(self.figure)
         self.ax = self.figure.add_subplot(111)
 
@@ -41,16 +41,24 @@ class MainWindow(QMainWindow):
         use = QLabel(text='expressions used')
         self.mat_exp = QLabel()
 
-        form_layout = QFormLayout()
-        form_layout.addRow("X min:", self.x_min_input)
-        form_layout.addRow("X max:", self.x_max_input)
-        form_layout.addRow("Expression:", self.mat)
-        form_layout.addRow(submit)
-        form_layout.addRow(clear)
+        self.db_name = QLineEdit()
+        add_db = QPushButton(text='Add to DB')
 
-        layout.addWidget(self.canvas, 0, 0, 6, 1)
+        form_graph = QFormLayout()
+        form_graph.addRow("X min:", self.x_min_input)
+        form_graph.addRow("X max:", self.x_max_input)
+        form_graph.addRow("Expression:", self.mat)
+        form_graph.addRow(submit)
+        form_graph.addRow(clear)
+
+        form_add_db = QFormLayout()
+        form_add_db.addRow("Enter name Graph", self.db_name)
+        form_add_db.addRow(add_db)
+
+        layout.addWidget(self.canvas, 0, 0, 5, 1)
         layout.addWidget(instruction, 0, 1, alignment=Qt.AlignmentFlag.AlignCenter)
-        layout.addLayout(form_layout, 1, 1, 6, 1)
+        layout.addLayout(form_graph, 1, 1, 6, 1)
+        layout.addLayout(form_add_db, 5, 1, 2, 2)
         layout.addWidget(use, 3, 1, alignment=Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(self.mat_exp, 4, 1, alignment=Qt.AlignmentFlag.AlignCenter)
 
