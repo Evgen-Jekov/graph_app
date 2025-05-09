@@ -75,3 +75,7 @@ A desktop application for drawing and saving graphs of mathematical expressions 
 ├── README.md
 └── requirements.txt
 ````
+
+## ✍️ Author
+
+the author of the project is Zhekov Evgen, I hope someone will find it interesting, in any case if you read the README I am grateful to you ❤️
