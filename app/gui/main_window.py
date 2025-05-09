@@ -10,6 +10,7 @@ from app.service.service import WorkCoordinateLine
 from app.service.service_abc import mat_evel
 from app.service.DRY import show_message
 from app.service.graph_repository import GraphWork
+from app.service.service_abc import SAFE_FUNCS
 
 work = WorkCoordinateLine()
 graph = GraphWork()
@@ -46,7 +47,9 @@ class MainWindow(QMainWindow):
 
         self.db_name = QLineEdit()
         add_db = QPushButton(text='Add to DB')
+        search_db = QPushButton(text='Search by name')
         add_db.clicked.connect(self.add_db_graph)
+        search_db.clicked.connect(self.search_db_graph)
 
         form_graph = QFormLayout()
         form_graph.addRow("X min:", self.x_min_input)
@@ -58,6 +61,7 @@ class MainWindow(QMainWindow):
         form_add_db = QFormLayout()
         form_add_db.addRow("Enter name Graph", self.db_name)
         form_add_db.addRow(add_db)
+        form_add_db.addRow(search_db)
 
         layout.addWidget(self.canvas, 0, 0, 5, 1)
         layout.addWidget(instruction, 0, 1, alignment=Qt.AlignmentFlag.AlignCenter)
@@ -87,4 +91,37 @@ class MainWindow(QMainWindow):
         result = " ".join(mat_evel)
         name = self.db_name.text()
 
-        graph.add_to_graph(name_graph=name, graph=result)
+        err = graph.add_to_graph(name_graph=name, graph=result)
+
+        if isinstance(err, str):
+            show_message(text=err, type_message='Error')
+
+    def search_db_graph(self):
+        try:
+            name = self.db_name.text()
+            result = graph.search_by_name(name_graph=name)
+
+            tearing = result.split()
+        
+            x_min = int(self.x_min_input.text())
+            x_max = int(self.x_max_input.text()) 
+
+            x = np.linspace(x_min, x_max, 400)
+
+            for expr in tearing:
+                temp = expr.replace('\n', '') 
+
+                try:
+                    y = eval(temp, {"x": x, **SAFE_FUNCS, "__builtins__": {}})
+
+                    if np.isscalar(y):
+                        y = np.full_like(x, y)
+
+                    draw_graph(self=self, dr=True, x=x, y=y)
+            
+                except Exception as e:
+                    show_message(text=f"Error in expression: {e}", type_message="Error")
+                
+        except Exception as e:
+            show_message(text=str(e), type_message='Error')
+ 
