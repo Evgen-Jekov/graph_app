@@ -6,11 +6,13 @@ import numpy as np
 
 from app.gui.style.style import style
 from app.service.DRY import draw_graph
-from app.service.service import WorkGraph
+from app.service.service import WorkCoordinateLine
 from app.service.service_abc import mat_evel
 from app.service.DRY import show_message
+from app.service.graph_repository import GraphWork
 
-work = WorkGraph()
+work = WorkCoordinateLine()
+graph = GraphWork()
 
 
 class MainWindow(QMainWindow):
@@ -44,6 +46,7 @@ class MainWindow(QMainWindow):
 
         self.db_name = QLineEdit()
         add_db = QPushButton(text='Add to DB')
+        add_db.clicked.connect(self.add_db_graph)
 
         form_graph = QFormLayout()
         form_graph.addRow("X min:", self.x_min_input)
@@ -73,9 +76,15 @@ class MainWindow(QMainWindow):
 
         if isinstance(error, str):
             show_message(text=error, type_message="Error")
-            
+
     def clear_graph(self):
         draw_graph(self=self, dr=False)
 
         self.mat_exp.setText('')
         mat_evel.clear()
+
+    def add_db_graph(self):
+        result = " ".join(mat_evel)
+        name = self.db_name.text()
+
+        graph.add_to_graph(name_graph=name, graph=result)

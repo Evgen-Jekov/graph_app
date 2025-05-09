@@ -1,10 +1,10 @@
 import numpy as np
 
-from app.service.service_abc import WorkGraphBase
+from app.service.service_abc import WorkCoordinateLineBase
 from app.service.service_abc import mat_evel, SAFE_FUNCS
 from app.service.DRY import draw_graph
 
-class WorkGraph(WorkGraphBase):
+class WorkCoordinateLine(WorkCoordinateLineBase):
     def __init__(self):
             self.condition = True
 

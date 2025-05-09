@@ -27,7 +27,7 @@ SAFE_FUNCS = {
     "e": np.e,
 }
 
-class WorkGraphBase(ABC):
+class WorkCoordinateLineBase(ABC):
     @abstractmethod
     def add_graph(self):
         pass
